@@ -36,12 +36,12 @@ Examples:
     <tr>
       <td>C2RCC on S3 OLCI data</td>
       <td>00:40:38</td>
-      <td><b>$${\color{green}00:07:05}$$</b></td>
+      <td>$${\color{green}00:07:05}$$</td>
       <td>01:47:10</td>
     </tr>
     <tr>
       <td>S1 Terrain-Correction</td>
-      <td><b>$${\color{green}00:03:03}$$</b></td>
+      <td>$${\color{green}00:03:03}$$</td>
       <td>00:04:20</td>
       <td>00:04:18</td>
     </tr>
