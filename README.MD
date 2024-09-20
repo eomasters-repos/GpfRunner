@@ -16,36 +16,12 @@ In the case of S1 it is 0.7x slower.<br>
 After finding the best configuration for your process you can do the mass production and save a lot of time.
 
 Examples:
-<table>
-<thead>
-<tr>
-<td>Process</td>
-<td>GPT</td>
-<td>GPF Runner + GPF-Write</td>
-<td>GPF Runner + PIO-Write</td>
-</tr>
-<tr>
-<td>Resampling S2 product to 20m</td>
-<td>00:05:58</td>
-<td>00:07:59</td>
-<td style="color:green"><b>00:02:43</b></td>
-</tr>
-<tr>
-<td>C2RCC on S3 OLCI data</td>
-<td>00:40:38</td>
-<td><b style="color:green">00:07:05</b></td>
-<td>01:47:10</td>
-</tr>
-<tr>
-<td>S1 Terrain-Correction</td>
-<td><b style="color:green">00:03:03</b></td>
-<td>00:04:20</td>
-<td>00:04:18</td>
-</tr>
-</thead>
-</table>
 
-$${\color{green}00:03:03}$$
+| Process                      | GPT                                | GPF Runner + GPF-Write              | GPF Runner + PIO-Write              |
+|------------------------------|------------------------------------|-------------------------------------|-------------------------------------|
+| Resampling S2 product to 20m | 00:05:58                           | 00:07:59                            | <b>$${\color{green}00:02:43}$$</b> | 
+| C2RCC on S3 OLCI data        | 00:40:38                           | <b>$${\color{green}00:07:05}$$</b> | 01:47:10                            |               
+| S1 Terrain-Correction        | <b>$${\color{green}00:03:03}$$</b> | 00:04:20                            | 00:04:18                            |               
 
 This tool is not as generic as the gpt tool, and you have to implement your processing chain in Java, but it can serve
 as a template for your further development. It is not very complicated when you have this project as your starting
@@ -119,6 +95,7 @@ The properties `maven.compiler.source` and `maven.compiler.target` shall match t
 the same which is required by SNAP.
 
 ```xml
+
 <properties>
   <snap.version>11.0.0</snap.version>
   <!-- modify the path to the java executable here -->
