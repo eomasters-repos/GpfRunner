@@ -17,11 +17,11 @@ After finding the best configuration for your process you can do the mass produc
 
 Examples:
 
-| Process                      | GPT                           | GPF Runner + GPF-Write        | GPF Runner + PIO-Write        |
-|------------------------------|-------------------------------|-------------------------------|-------------------------------|
-| Resampling S2 product to 20m | 00:05:58                      | 00:07:59                      | $${\color{green}00:02:43}$$   | 
-| C2RCC on S3 OLCI data        | 00:40:38                      | $${\color{green}00:07:05}$$   | 01:47:10                      |               
-| S1 Terrain-Correction        | $${\color{green}00:03:03}$$   | 00:04:20                      | 00:04:18                      |               
+| Process                      | GPT                         | GPF Runner + GPF-Write      | GPF Runner + PIO-Write      |
+|------------------------------|-----------------------------|-----------------------------|-----------------------------|
+| Resampling S2 product to 20m | 00:05:58                    | 00:07:59                    | $${\color{green}00:02:43}$$ | 
+| C2RCC on S3 OLCI data        | 00:40:38                    | $${\color{green}00:07:05}$$ | 01:47:10                    |               
+| S1 Terrain-Correction        | $${\color{green}00:03:03}$$ | 00:04:20                    | 00:04:18                    |               
 
 This tool is not as generic as the gpt tool, and you have to implement your processing chain in Java, but it can serve
 as a template for your further development. It is not very complicated when you have this project as your starting
@@ -49,18 +49,18 @@ This will do two things:
    `target/dependencies` directory
 2. Executes the built result.
 
-This will not do anything useful as long you haven't changed the code. But at least you will see a greetings message.
+This will not do anything useful as long you haven't changed the code. But at least you will see a "**** Starting
+Processing" message followed by an error message.
 
-Instead of using maven to execute to tool you can also use the `gpf-runner-<version>.jar` file from the `target`
-directory and the `dependency` folder on your own. For example in a shell script.
+In a production environment you would use the built output `gpf-runner-<version>.jar` and the `dependency` directory to
+set up the execution environment and specify the parameters for each run on the commandline, e.g., the path to the
+product to process.
 
 ## Configuration
 
 The execution can be configured within the maven pom file. In the configuration section of the `exec-maven-plugin`
 arguments can be added. By default, the memory allowed to use is set to 15G. Also, the classpath is set and the main
 class which shall be executed. Here further parameters can be set.
-In a production environment you can specify the parameters for each run on the commandline, e.g., the path to the
-product to process.
 
 ```xml
 
