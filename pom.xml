@@ -4,7 +4,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <name>Project Name</name>
+  <name>GPF Runner</name>
   <description>Project Description</description>
   <url>https://www.eomasters.org/</url>
   <inceptionYear>2023</inceptionYear>
@@ -14,13 +14,14 @@
   </organization>
 
   <groupId>org.eomasters</groupId>
-  <artifactId>artifactId</artifactId>
+  <artifactId>gpf-runner</artifactId>
   <version>0.1-SNAPSHOT</version>
-  <packaging>nbm</packaging>
 
   <properties>
-    <snap.version>10.0.0-SNAPSHOT</snap.version>
-    <javahelp.version>2.0.05</javahelp.version>
+    <snap.version>11.0.0</snap.version>
+    <!-- modify the path to the java executable here -->
+    <java.executable>java</java.executable>
+
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,9 +30,23 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.junit</groupId>
-        <artifactId>junit-bom</artifactId>
-        <version>5.10.0</version>
+        <groupId>org.esa.snap</groupId>
+        <artifactId>snap-engine-kit</artifactId>
+        <version>${snap.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>eu.esa.opt</groupId>
+        <artifactId>opttbx-kit</artifactId>
+        <version>${snap.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>eu.esa.microwavetbx</groupId>
+        <artifactId>microwavetbx-kit</artifactId>
+        <version>${snap.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -41,31 +56,19 @@
   <dependencies>
     <dependency>
       <groupId>org.esa.snap</groupId>
-      <artifactId>ceres-core</artifactId>
+      <artifactId>snap-engine-kit</artifactId>
       <version>${snap.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.esa.snap</groupId>
-      <artifactId>ceres-binding</artifactId>
+      <groupId>eu.esa.opt</groupId>
+      <artifactId>opttbx-kit</artifactId>
       <version>${snap.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.esa.snap</groupId>
-      <artifactId>ceres-jai</artifactId>
+      <groupId>eu.esa.microwavetbx</groupId>
+      <artifactId>microwavetbx-kit</artifactId>
       <version>${snap.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.esa.snap</groupId>
-      <artifactId>snap-core</artifactId>
-      <version>${snap.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
-      <scope>test</scope>
-    </dependency>
-
   </dependencies>
 
   <build>
@@ -73,97 +76,66 @@
 
       <plugins>
         <plugin>
-          <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>3.3.0</version>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>3.4.1</version>
         </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.11.0</version>
         </plugin>
         <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.1.2</version>
-        </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>license-maven-plugin</artifactId>
-          <version>2.2.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.netbeans.utilities</groupId>
-          <artifactId>nbm-maven-plugin</artifactId>
-          <version>4.4</version>
-        </plugin>
-        <plugin>
-          <groupId>org.jacoco</groupId>
-          <artifactId>jacoco-maven-plugin</artifactId>
-          <version>0.8.10</version>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>3.8.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
 
+
     <plugins>
       <plugin>
-        <!-- use mvn license:remove-file-header to remove the header and regenerate it-->
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>license-maven-plugin</artifactId>
-        <configuration>
-          <licenseResolver>${project.baseUri}/.mvn/license</licenseResolver>
-          <licenseName>eom_gpl_v3</licenseName>
-          <copyrightOwners>Marco Peters</copyrightOwners>
-          <includes>
-            <include>**/*.java</include>
-            <include>**/*.html</include>
-          </includes>
-        </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
-            <id>UpdateHeaders</id>
-            <phase>process-sources</phase>
+            <id>copy-dependencies</id>
+            <phase>package</phase>
             <goals>
-              <goal>update-file-header</goal>
+              <goal>copy-dependencies</goal>
             </goals>
             <configuration>
-              <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
-              <emptyLineAfterHeader>true</emptyLineAfterHeader>
-              <canUpdateDescription>false</canUpdateDescription>
-              <canUpdateCopyright>true</canUpdateCopyright>
-              <processStartTag>========================LICENSE_START=================================</processStartTag>
-              <processEndTag>=========================LICENSE_END==================================</processEndTag>
-              <sectionDelimiter>======================================================================
-              </sectionDelimiter>
-              <descriptionTemplate>.mvn/license/file_header_description.txt</descriptionTemplate>
+              <outputDirectory>${project.build.directory}\dependencies</outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>false</overWriteSnapshots>
+              <overWriteIfNewer>true</overWriteIfNewer>
             </configuration>
           </execution>
         </executions>
-
       </plugin>
 
       <plugin>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <dependencies>
-          <dependency>
-            <groupId>com.puppycrawl.tools</groupId>
-            <artifactId>checkstyle</artifactId>
-            <version>10.12.2</version>
-          </dependency>
-        </dependencies>
-        <configuration>
-          <configLocation>.mvn/google_checks.xml</configLocation>
-          <includeTestSourceDirectory>false</includeTestSourceDirectory>
-          <consoleOutput>true</consoleOutput>
-          <failsOnError>true</failsOnError>
-          <linkXRef>false</linkXRef>
-        </configuration>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
         <executions>
           <execution>
-            <id>validate</id>
-            <phase>validate</phase>
+            <id>exec-runner</id>
             <goals>
-              <goal>check</goal>
+              <goal>exec</goal>
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <executable>${java.executable}</executable>
+          <arguments>
+            <argument>-Xmx18G</argument>
+            <argument>-cp</argument>
+            <argument>
+              ${project.build.directory}\${project.build.finalName}.jar;${project.build.directory}\dependencies\*
+            </argument>
+            <argument>org.eomasters.GpfRunnerS1</argument>
+          </arguments>
+        </configuration>
       </plugin>
 
       <plugin>
@@ -174,99 +146,6 @@
           <debug>true</debug>
           <encoding>UTF-8</encoding>
         </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.3.0</version>
-        <configuration>
-          <archive>
-            <manifestFile>${project.build.directory}/classes/META-INF/manifest.mf</manifestFile>
-          </archive>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.netbeans.utilities</groupId>
-        <artifactId>nbm-maven-plugin</artifactId>
-        <extensions>true</extensions>
-        <dependencies>
-          <dependency>
-            <groupId>javax.help</groupId>
-            <artifactId>javahelp</artifactId>
-            <version>${javahelp.version}</version>
-          </dependency>
-        </dependencies>
-        <configuration>
-          <homePageUrl>https://www.eomasters.org</homePageUrl>
-          <licenseName>GPL 3</licenseName>
-          <licenseFile>${project.basedir}/LICENSE.html</licenseFile>
-          <requiresRestart>true</requiresRestart>
-          <keystore>${project.basedir}/resources/keystore/eomtbx.ks</keystore>
-          <keystorealias>snap</keystorealias>
-          <keystorepassword>snap-123</keystorepassword>
-          <sourceManifestFile>${project.basedir}/src/main/nbm/manifest.mf</sourceManifestFile>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>report</id>
-            <phase>test</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>jacoco-check</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-            <configuration>
-              <haltOnFailure>false</haltOnFailure>
-              <rules>
-                <rule>
-                  <element>BUNDLE</element>
-                  <limits>
-                    <!-- every class should be touched once at least-->
-                    <limit>
-                      <counter>CLASS</counter>
-                      <value>MISSEDCOUNT</value>
-                      <maximum>0</maximum>
-                    </limit>
-                  </limits>
-                </rule>
-                <rule>
-                  <element>CLASS</element>
-                  <limits>
-                    <limit>
-                      <counter>LINE</counter>
-                      <value>COVEREDRATIO</value>
-                      <minimum>0.80</minimum>
-                    </limit>
-                    <limit>
-                      <counter>METHOD</counter>
-                      <value>COVEREDRATIO</value>
-                      <minimum>0.70</minimum>
-                    </limit>
-                    <limit>
-                      <counter>BRANCH</counter>
-                      <value>COVEREDRATIO</value>
-                      <minimum>0.55</minimum>
-                    </limit>
-                  </limits>
-                </rule>
-              </rules>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
 
