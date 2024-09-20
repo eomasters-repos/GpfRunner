@@ -45,6 +45,8 @@ Examples:
 </thead>
 </table>
 
+$${\color{green}00:03:03}$$
+
 This tool is not as generic as the gpt tool, and you have to implement your processing chain in Java, but it can serve
 as a template for your further development. It is not very complicated when you have this project as your starting
 point.
