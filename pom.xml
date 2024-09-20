@@ -5,9 +5,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <name>GPF Runner</name>
-  <description>Project Description</description>
+  <description>Little tool to help you to run processing with ESA SNAP faster</description>
   <url>https://www.eomasters.org/</url>
-  <inceptionYear>2023</inceptionYear>
+  <inceptionYear>2024</inceptionYear>
   <organization>
     <name>EOMasters</name>
     <url>https://www.eomasters.org</url>
@@ -15,7 +15,7 @@
 
   <groupId>org.eomasters</groupId>
   <artifactId>gpf-runner</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1</version>
 
   <properties>
     <snap.version>11.0.0</snap.version>
