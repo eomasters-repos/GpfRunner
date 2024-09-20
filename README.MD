@@ -17,6 +17,37 @@ After finding the best configuration for your process you can do the mass produc
 
 Examples:
 
+<table>
+  <thead>
+    <tr>
+      <th>Process</th>
+      <th>GPT</th>
+      <th>GPF Runner + GPF-Write</th>
+      <th>GPF Runner + PIO-Write</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Resampling S2 product to 20m</td>
+      <td>00:05:58</td>
+      <td>00:07:59</td>
+      <td><b>$${\color{green}00:02:43}$$</b></td>
+    </tr>
+    <tr>
+      <td>C2RCC on S3 OLCI data</td>
+      <td>00:40:38</td>
+      <td><b>$${\color{green}00:07:05}$$</b></td>
+      <td>01:47:10</td>
+    </tr>
+    <tr>
+      <td>S1 Terrain-Correction</td>
+      <td><b>$${\color{green}00:03:03}$$</b></td>
+      <td>00:04:20</td>
+      <td>00:04:18</td>
+    </tr>
+  </tbody>
+</table>
+
 | Process                      | GPT                                | GPF Runner + GPF-Write              | GPF Runner + PIO-Write              |
 |------------------------------|------------------------------------|-------------------------------------|-------------------------------------|
 | Resampling S2 product to 20m | 00:05:58                           | 00:07:59                            | <b>$${\color{green}00:02:43}$$</b> | 
