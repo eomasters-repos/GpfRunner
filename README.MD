@@ -17,11 +17,11 @@ After finding the best configuration for your process you can do the mass produc
 
 Examples:
 
-| Process                      | GPT             | GPF Runner + GPF-Write | GPF Runner + PIO-Write |
-|------------------------------|-----------------|------------------------|------------------------|
-| Resampling S2 product to 20m | 00:05:58        | 00:07:59               | <b>00:02:43</b>        | 
-| C2RCC on S3 OLCI data        | 00:40:38        | <b>00:07:05</b>        | 01:47:10               |               
-| S1 Terrain-Correction        | <b>00:03:03</b> | 00:04:20               | 00:04:18               |               
+| Process                      | GPT                                 | GPF Runner + GPF-Write              | GPF Runner + PIO-Write              |
+|------------------------------|-------------------------------------|-------------------------------------|-------------------------------------|
+| Resampling S2 product to 20m | 00:05:58                            | 00:07:59                            | <b style="color:green">00:02:43</b> | 
+| C2RCC on S3 OLCI data        | 00:40:38                            | <b style="color:green">00:07:05</b> | 01:47:10                            |               
+| S1 Terrain-Correction        | <b style="color:green">00:03:03</b> | 00:04:20                            | 00:04:18                            |               
 
 This tool is not as generic as the gpt tool, and you have to implement your processing chain in Java, but it can serve
 as a template for your further development. It is not very complicated when you have this project as your starting
