@@ -133,7 +133,7 @@
             <argument>
               ${project.build.directory}\${project.build.finalName}.jar;${project.build.directory}\dependencies\*
             </argument>
-            <argument>org.eomasters.GpfRunnerS1</argument>
+            <argument>org.eomasters.GpfRunner</argument>
           </arguments>
         </configuration>
       </plugin>
