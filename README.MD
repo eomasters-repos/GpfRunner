@@ -31,7 +31,7 @@ Examples:
       <td>Resampling S2 product to 20m</td>
       <td>00:05:58</td>
       <td>00:07:59</td>
-      <td><b>$${\color{green}00:02:43}$$</b></td>
+      <td>$${\color{green}00:02:43}$$</td>
     </tr>
     <tr>
       <td>C2RCC on S3 OLCI data</td>
