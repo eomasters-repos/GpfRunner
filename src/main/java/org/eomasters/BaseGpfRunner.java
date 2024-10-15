@@ -18,6 +18,11 @@ import org.esa.snap.core.gpf.main.GPT;
 import org.esa.snap.core.util.SystemUtils;
 import org.esa.snap.dataio.netcdf.NetCdfActivator;
 
+/**
+ * BaseGpfRunner provides an abstraction for initializing, processing, loading, and writing Earth observation products
+ * using the SNAP and GPT frameworks. This base class includes utility methods to streamline product processing
+ * workflows.
+ */
 public abstract class BaseGpfRunner {
 
   protected enum WRITE_MODE {GPF, PIO}
