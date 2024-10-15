@@ -57,8 +57,8 @@ This will do two things:
    `target/dependencies` directory
 2. Executes the built result.
 
-This will not do anything useful as long you haven't changed the code. But at least you will see a "**** Starting
-Processing" message followed by an error message.
+This will not do anything useful as long you haven't changed the code. Actually it will fail, because no path to a
+product is provided. But at least you will see a `**** Starting Processing` message followed by an error message.
 
 In a production environment you would use the built output `gpf-runner-<version>.jar` and the `dependency` directory to
 set up the execution environment and specify the parameters for each run on the commandline, e.g., the path to the
