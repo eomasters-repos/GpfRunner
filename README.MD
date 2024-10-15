@@ -38,6 +38,14 @@ point.
   of this repository. But you can also download
   a [zip file](https://github.com/eomasters-repos/GpfRunner/archive/refs/heads/master.zip).
 
+## Get the Source Code
+
+You can either download the source code from the [release page](https://github.com/eomasters-repos/GpfRunner/releases),
+or take [zip file](https://github.com/eomasters-repos/GpfRunner/archive/refs/heads/master.zip) which contains the latest
+modification not yet released. Alternatively, you can use git to get the code and retrieve future updates easily.
+
+`git clone https://github.com/eomasters-repos/GpfRunner.git`
+
 ## Usage
 
 After you have obtained the source code you can run the tool by invoking it from the command line using maven. Navigate
@@ -89,8 +97,17 @@ class which shall be executed. Here further parameters can be set.
 </plugin>
 ```
 
-In the properties section you can specify the SNAP version, and you can specify the path to the java executable which
-shall be used.
+The last argument `<argument>org.eomasters.GpfRunner</argument>` specifies which implementation is executed.
+You can also change it to one of
+
+* org.eomasters.GpfRunnerS1
+* org.eomasters.GpfRunnerS2
+* org.eomasters.GpfRunnerS3
+
+Or you can specify your own implementation.
+
+In the properties section you can specify the SNAP version, and you can specify the path to the Java executable which
+shall be used. This is only necessary if you haven't added Java to the system path variable.
 The properties `maven.compiler.source` and `maven.compiler.target` shall match the used java version and this should be
 the same which is required by SNAP.
 
@@ -109,13 +126,26 @@ the same which is required by SNAP.
 
 ## Implementation
 
-The default `GpfRunner` class implements a generic way and shows an example usage.
+The default `GpfRunner` class implements a generic way and shows an example how you can set up the processing. Some
+useful methods are implemented in the base class `BaseGpfRunner`.
+These are
+
+* initProcessing()
+* endProcessing()
+* loadInputProduct()
+* writeResult()
+* createParameterMap()
+
+Each of the methods is described in
+the [BaseGpfRunner](https://github.com/eomasters-repos/GpfRunner/blob/master/src/main/java/org/eomasters/BaseGpfRunner.java)
+class.
+
 The implementation does the necessary initialisation of SNAP and GPF, and it prints some useful messages at the
 beginning and the end of the processing. You need to specify the input and output path of your data before using it.
 To implement your processing chain you need to call the method `GPF.createProduct()` and pass the result to the next
 call of `GPF.createProduct()` and finally write the result.<br>
-As mentioned earlier the writing is important for the performance you can easily switch between the two modes. The
-`WriteTools.writeResult()` method takes as last parameter the write function which shall be used. This lets you quickly
+As mentioned earlier the writing is important for the performance. You can easily switch between the two modes. The
+`writeResult()` method takes as last parameter the write mode which shall be used. This lets you quickly
 test the best function for your process.<br>
 There are also variations of this GpfRunner implementation for the three examples given at the beginning of this readme
 file. Exchange the paths with paths to your file system and see how the performance is on your system.
