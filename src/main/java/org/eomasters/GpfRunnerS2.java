@@ -23,58 +23,40 @@
 
 package org.eomasters;
 
-import static java.time.Instant.now;
-
-import com.bc.ceres.core.PrintWriterProgressMonitor;
-import eu.esa.snap.hdf.HdfActivator;
-import java.io.File;
 import java.io.IOException;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Locale;
-import java.util.Map;
-import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.gpf.GPF;
-import org.esa.snap.core.gpf.main.GPT;
-import org.esa.snap.core.util.SystemUtils;
-import org.esa.snap.dataio.netcdf.NetCdfActivator;
 
-public class GpfRunnerS2 {
+public class GpfRunnerS2 extends BaseGpfRunner {
 
+  /**
+   * Main method for resampling a Sentinel-2 product to 20m.
+   *
+   * @param args command line arguments (not used in this implementation)
+   * @throws IOException if an I/O error occurs during product reading or writing
+   */
   public static void main(String[] args) throws IOException {
-    Instant start = now();
-    System.out.println("**** Starting Processing: " + start.atZone(java.time.ZoneId.systemDefault()));
-    initSnapAndGpf();
+    var startTime = initProcessing();
 
     String resolution = "20";
+
+    // Adapt the input and output paths here
     String filePath = "D:\\EOData\\_temp\\S2B_MSIL2A_20240515T101559_N0510_R065_T32UPE_20240515T144033.SAFE.zip";
     String outPath = "D:\\EOData\\_temp\\S2B_MSIL2A_20240515T101559_resampled_" + resolution + "m.znap.zip";
 
-    Product l2aProduct = ProductIO.readProduct(filePath);
-    Product resultProduct = GPF.createProduct("Resample", Map.of("targetResolution", resolution), l2aProduct);
-    // ProductIO.writeProduct(resultProduct, outPath, "ZNAP", new PrintWriterProgressMonitor(System.out));
-    GPF.writeProduct(resultProduct, new File(outPath), "ZNAP", true, false, new PrintWriterProgressMonitor(System.out));
-    Instant end = now();
-    System.out.println("Duration: " + format(Duration.between(start, end)));
-    System.out.println("**** Stopped Processing: " + end.atZone(java.time.ZoneId.systemDefault()));
-  }
+    //*******************************************
+    // Set up the processing chain
 
-  private static void initSnapAndGpf() {
-    if (System.getProperty("snap.context") == null) {
-      System.setProperty("snap.context", "snap");
-    }
-    Locale.setDefault(Locale.ENGLISH); // Force usage of english locale
-    SystemUtils.init3rdPartyLibs(GPT.class);
-    HdfActivator.activate();
-    NetCdfActivator.activate();
-  }
+    Product l2aProduct = loadInputProduct(filePath);
+    Product resultProduct = GPF.createProduct("Resample",
+                                              createParameterMap("targetResolution", resolution),
+                                              l2aProduct);
 
-  private static String format(Duration duration) {
-    return String.format("%d:%02d:%02d",
-        duration.toHours(),
-        duration.toMinutesPart(),
-        duration.toSecondsPart());
+    //*******************************************
 
+    // Write the processing result
+    writeResult(resultProduct, outPath, "ZNAP", WRITE_MODE.GPF);
+
+    endProcessing(startTime);
   }
 }

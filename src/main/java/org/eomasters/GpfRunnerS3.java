@@ -23,57 +23,39 @@
 
 package org.eomasters;
 
-import static java.time.Instant.now;
-
-import com.bc.ceres.core.PrintWriterProgressMonitor;
-import eu.esa.snap.hdf.HdfActivator;
-import java.io.File;
 import java.io.IOException;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Locale;
-import java.util.Map;
-import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.gpf.GPF;
-import org.esa.snap.core.gpf.main.GPT;
-import org.esa.snap.core.util.SystemUtils;
-import org.esa.snap.dataio.netcdf.NetCdfActivator;
 
-public class GpfRunnerS3 {
+public class GpfRunnerS3 extends BaseGpfRunner {
 
+  /**
+   * Main method for processing a Sentinel-3 OLCI product using the c2rcc.olci algorithm.
+   *
+   * @param args command line arguments (not used in this implementation)
+   * @throws IOException if an I/O error occurs during product reading or writing.
+   */
   public static void main(String[] args) throws IOException {
-    Instant start = now();
-    System.out.println("**** Starting Processing: " + start.atZone(java.time.ZoneId.systemDefault()));
-    initSnapAndGpf();
+    var start = initProcessing();
 
+    // Adapt the input and output paths here
     String inputPath = "D:\\EOData\\S3\\OLCI\\S3B_OL_1_EFR____20230717T104859_20230717T105159_20230717T232729_0180_081_379_2160_PS2_O_NT_003.SEN3";
     String outputPath = "D:\\EOData\\_temp\\S3B_OL_1_EFR_20230717T104859_c2rcc_.znap.zip";
 
-    Product inputProduct = ProductIO.readProduct(inputPath);
-    Product resultProduct = GPF.createProduct("c2rcc.olci", Map.of("outputUncertainties", false), inputProduct);
-    // ProductIO.writeProduct(resultProduct, outputPath, "ZNAP", new PrintWriterProgressMonitor(System.out));
-    GPF.writeProduct(resultProduct, new File(outputPath), "ZNAP", true, false, new PrintWriterProgressMonitor(System.out));
-    Instant end = now();
-    System.out.println("Duration: " + format(Duration.between(start, end)));
-    System.out.println("**** Stopped Processing: " + end.atZone(java.time.ZoneId.systemDefault()));
+    //*******************************************
+    // Set up the processing chain
+
+    Product inputProduct = loadInputProduct(inputPath);
+    Product resultProduct = GPF.createProduct("c2rcc.olci",
+                                              createParameterMap("outputUncertainties", false),
+                                              inputProduct);
+
+    //*******************************************
+
+    // Write the processing result
+    writeResult(resultProduct, outputPath, "ZNAP", WRITE_MODE.GPF);
+
+    endProcessing(start);
   }
 
-  private static void initSnapAndGpf() {
-    if (System.getProperty("snap.context") == null) {
-      System.setProperty("snap.context", "snap");
-    }
-    Locale.setDefault(Locale.ENGLISH); // Force usage of english locale
-    SystemUtils.init3rdPartyLibs(GPT.class);
-    HdfActivator.activate();
-    NetCdfActivator.activate();
-  }
-
-  private static String format(Duration duration) {
-    return String.format("%d:%02d:%02d",
-        duration.toHours(),
-        duration.toMinutesPart(),
-        duration.toSecondsPart());
-
-  }
 }

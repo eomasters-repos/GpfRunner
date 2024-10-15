@@ -23,102 +23,41 @@
 
 package org.eomasters;
 
-import static java.time.Instant.now;
-
-import eu.esa.snap.hdf.HdfActivator;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Locale;
-import java.util.Map;
-import org.eomasters.WriteTools.WRITE_FUNC;
-import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.datamodel.Product;
 import org.esa.snap.core.gpf.GPF;
-import org.esa.snap.core.gpf.main.GPT;
-import org.esa.snap.core.util.SystemUtils;
-import org.esa.snap.dataio.netcdf.NetCdfActivator;
 
-public class GpfRunner {
+public class GpfRunner extends BaseGpfRunner {
 
   /**
-   * The main method serves as the entry point for the application, processing a satellite product based on provided
-   * parameters.
+   * The main method serves as the entry point for the processing. It shows how to extract a region from a product and
+   * resample it to a desired width and height.
    *
-   * @param args Command-line arguments where: args[0] is the input product file path, args[1] is the output product
-   *             file path, args[2] (optional) is the path to a properties file containing processing parameters.
+   * @param args command line arguments (not used in this implementation)
    * @throws IOException if an input or output operation fails.
    */
   public static void main(String[] args) throws IOException {
-    Instant start = now();
-    System.out.println("**** Starting Processing: " + start.atZone(java.time.ZoneId.systemDefault()));
-
-    initSnapAndGpf();
+    var startTime = initProcessing();
 
     // Adapt the input and output paths here
     Product inputProduct = loadInputProduct("Path to your input product");
-    Path outPath = Path.of("path to your output product");
+    String outPath = "path to your output product";
 
     //*******************************************
     // Set up the processing chain
 
-    Map<String, Object> subsetParams = Map.of( "region", "10,10,1000,1000");
+    var subsetParams = createParameterMap("region", "10,10,1000,1000");
     Product intermediate1 = GPF.createProduct("Subset", subsetParams, inputProduct);
 
-    Map<String, Object> resampleParams = Map.of("targetWidth", 500, "targetHeight", 500);
+    var resampleParams = createParameterMap("targetWidth", 500, "targetHeight", 500);
     Product result = GPF.createProduct("Resample", resampleParams, intermediate1);
 
     //*******************************************
 
     // Write the processing result
-    WriteTools.writeResult(result, outPath, "ZNAP", WRITE_FUNC.GPF);
+    writeResult(result, outPath, "ZNAP", WRITE_MODE.GPF);
 
-    Instant end = now();
-    System.out.println("**** Stopped Processing: " + end.atZone(java.time.ZoneId.systemDefault()));
-    System.out.println("**** Duration: " + format(Duration.between(start, end)));
+    endProcessing(startTime);
   }
 
-  /**
-   * Loads a Product from the given file path.
-   *
-   * @param filePath The path to the file from which to load the Product.
-   * @return The loaded Product object.
-   * @throws IOException if the file cannot be read or does not contain a valid Product.
-   */
-  private static Product loadInputProduct(String filePath) throws IOException {
-    Product inputProduct = ProductIO.readProduct(filePath);
-    if (inputProduct == null) {
-      throw new IOException("Could not read input product: " + filePath);
-    }
-    return inputProduct;
-  }
-
-  /**
-   * Initializes the SNAP and GPT libraries for processing. Sets up the necessary system properties, default locale, and
-   * activates required third-party libraries for HDF and NetCDF operations.
-   */
-  private static void initSnapAndGpf() {
-    if (System.getProperty("snap.context") == null) {
-      System.setProperty("snap.context", "snap");
-    }
-    Locale.setDefault(Locale.ENGLISH); // Force usage of english locale
-    SystemUtils.init3rdPartyLibs(GPT.class);
-    HdfActivator.activate();
-    NetCdfActivator.activate();
-  }
-
-  /**
-   * Formats a given {@link Duration} object into a string representation in the format of "H:MM:SS".
-   *
-   * @param duration The {@link Duration} object to be formatted.
-   * @return A string representing the formatted duration in the "H:MM:SS" format.
-   */
-  private static String format(Duration duration) {
-    return String.format("%d:%02d:%02d",
-        duration.toHours(),
-        duration.toMinutesPart(),
-        duration.toSecondsPart());
-
-  }
 }
