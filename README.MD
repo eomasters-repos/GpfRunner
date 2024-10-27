@@ -150,7 +150,13 @@ test the best function for your process.<br>
 There are also variations of this GpfRunner implementation for the three examples given at the beginning of this readme
 file. Exchange the paths with paths to your file system and see how the performance is on your system.
 
-## Support
+## Questions?
+
+If you have questions regarding the usage you can use the [EOMasters forum](https://www.eomasters.org/forum/development-category). Please 
+use the corresponding function on GitHub, if you [find an issue](https://github.com/eomasters-repos/GpfRunner/issues) in the code or if 
+you want to [provide a pull request](https://github.com/eomasters-repos/GpfRunner/pulls) to improve the code. 
+
+## Support EOMasters
 
 You can support me by following me on social-media<br>
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/eomasters)
