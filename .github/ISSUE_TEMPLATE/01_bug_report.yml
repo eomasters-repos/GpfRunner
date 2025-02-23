@@ -1,0 +1,56 @@
+name: 🐞Bug Report
+description: Submit a bug report.
+labels: [ "bug" ]
+assignees:
+  - eomasters-repos
+body:
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Short Description
+      description: "Summarize the issue in a few sentences."
+      placeholder: "Enter a short description of the issue"
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps_to_reproduce
+    attributes:
+      label: Steps to Reproduce the Problem
+      description: "Provide the necessary steps to reproduce the issue."
+      placeholder: |
+        For example:
+        1. Step one
+        2. Step two
+        3. Step three
+
+  - type: textarea
+    id: log
+    attributes:
+      label: Log Output
+      description: "Provide the log output."
+      placeholder: Either paste the log here or add the log file.
+
+  - type: dropdown
+    id: operating_system
+    attributes:
+      label: Operating System
+      description: "Specify the operating system you were using."
+      options:
+        - Windows
+        - macOs
+        - Unix
+    validations:
+      required: true
+
+  - type: input
+    id: os_details
+    attributes:
+      label: Operating System Details
+      description: "Provide details about the operating system you were using."
+      placeholder: "e.g., the version, the Linux distribution or other details."
+
+  - type: markdown
+    attributes:
+      value: "## Thanks for your report! We'll take care of it."
