@@ -49,7 +49,7 @@ modification not yet released. Alternatively, you can use git to get the code an
 ## Usage
 
 After you have obtained the source code you can run the tool by invoking it from the command line using maven. Navigate
-into the base directory of the project where the `pom.xml` files is located. And then call:
+into the base directory of the project where the `pom.xml` file is located. And then call:
 `mvn package exec:exec`
 This will do two things:
 
@@ -160,7 +160,7 @@ you want to [provide a pull request](https://github.com/eomasters-repos/GpfRunne
 
 You can support me by following me on social-media<br>
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/eomasters)
-[![X Follow](https://img.shields.io/badge/Twitter-000000?style=for-the-badge&logo=x&logoColor=white)](https://twitter.com/eomasters)
+[![Bluesky](https://img.shields.io/badge/Bluesky-0285FF?style=for-the-badge&logo=bluesky&logoColor=fff&labelColor=0285FF)](https://bsky.app/profile/eomasters.org)
 [![Mastodon Follow](https://img.shields.io/badge/Mastodon-6364FF?style=for-the-badge&logo=Mastodon&logoColor=white)](https://mastodon.green/@EOMasters)
 
 or buying me a coffee at ko-fi<br>
